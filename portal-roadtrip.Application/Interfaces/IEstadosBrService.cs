@@ -1,0 +1,13 @@
+﻿using portal_roadtrip.Domain.Shared.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace portal_roadtrip.Application.Interfaces;
+
+public interface IEstadosBrService
+{
+    List<EstadosBr> ListarEstadosBr();
+}
