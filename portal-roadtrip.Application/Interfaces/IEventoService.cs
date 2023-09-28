@@ -1,4 +1,5 @@
-﻿using portal_roadtrip.Domain.Entities;
+﻿using portal_roadtrip.Application.DTO;
+using portal_roadtrip.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace portal_roadtrip.Application.Interfaces;
 
 public interface IEventoService
 {
-    Task<Evento> AddEvento(Evento evento);
+    Task<Evento> AddEvento(EventoDTO dto);
     Task<Evento> UpdateEvento(Evento evento);
     Task<bool> DeleteEvento(int eventoId);
     Task<List<Evento>> ListarEventos();

@@ -32,6 +32,8 @@ builder.Services.AddScoped<IPontoEmbarqueService, PontoEmbarqueService>();
 builder.Services.AddScoped<IPontoEmbarqueRepository, PontoEmbarqueRepository>();
 builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped<IEstadosBrService, EstadosBrService>();
+builder.Services.AddScoped<ICategoriaEventoService, CategoriaEventoService>();
+builder.Services.AddScoped<ICategoriaEventoRepository, CategoriaEventoRepository>();
 
 builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();

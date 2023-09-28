@@ -1,4 +1,5 @@
-﻿using portal_roadtrip.Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using portal_roadtrip.Application.Interfaces;
 using portal_roadtrip.Domain.Entities;
 using portal_roadtrip.Persistence.Interfaces;
 using System;
@@ -31,9 +32,17 @@ public class CategoriaEventoService : ICategoriaEventoService
         throw new NotImplementedException();
     }
 
-    public Task<List<CategoriaEvento>> ListarCategoriaEventos()
+    public async Task<List<CategoriaEvento>> ListarCategoriaEventos()
     {
-        throw new NotImplementedException();
+        try
+        {
+            return await _categoriaEventoRepository.AsQueryable().ToListAsync();
+        }
+        catch (Exception ex)
+        {
+
+            throw ex;
+        }
     }
 
     public Task<CategoriaEvento> UpdateCategoriaEvento(CategoriaEvento CategoriaEvento)

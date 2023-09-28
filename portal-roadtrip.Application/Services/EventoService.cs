@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using portal_roadtrip.Application.DTO;
 using portal_roadtrip.Application.Interfaces;
 using portal_roadtrip.Domain.Entities;
 using portal_roadtrip.Persistence.Interfaces;
@@ -19,11 +20,11 @@ public class EventoService : IEventoService
         _eventoRepository = eventoRepository;
     }
 
-    public async Task<Evento> AddEvento(Evento evento)
+    public async Task<Evento> AddEvento(EventoDTO dto)
     {
         try
         {
-            var response = await _eventoRepository.AddAsycn(evento);
+            var response = await _eventoRepository.AddAsycn(new Evento());
 
             await _eventoRepository.SaveChangesAsync();
 

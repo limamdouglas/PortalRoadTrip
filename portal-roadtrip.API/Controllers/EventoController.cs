@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using portal_roadtrip.Application.DTO;
 using portal_roadtrip.Application.Interfaces;
 using portal_roadtrip.Domain.Entities;
 
@@ -27,9 +28,9 @@ public class EventoController : ControllerBase
     }
 
     [HttpPost("AddEvento")]
-    public async Task<ActionResult<Evento>> AddEvento([FromBody] Evento evento)
+    public async Task<ActionResult<Evento>> AddEvento([FromBody] EventoDTO dto)
     {
-        return await EventoService.AddEvento(evento);
+        return await EventoService.AddEvento(dto);
     }
 
     [HttpDelete("DeletarEvento")]
