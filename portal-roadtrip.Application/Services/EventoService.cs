@@ -24,7 +24,15 @@ public class EventoService : IEventoService
     {
         try
         {
-            var response = await _eventoRepository.AddAsycn(new Evento());
+            var evento = new Evento()
+            {
+                CategoriaEventoId = Convert.ToInt32(dto.Categoria),
+                Data = new DateTime(Convert.ToInt32(dto.DataEvento.Substring(0,4)),
+                                    Convert.ToInt32(dto.DataEvento.Substring(5, 2)),
+                                    Convert.ToInt32(dto.DataEvento.Substring(8, 2))),
+                Nome = dto.Evento
+            };
+            var response = await _eventoRepository.AddAsycn(evento);
 
             await _eventoRepository.SaveChangesAsync();
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using portal_roadtrip.Application.DTO;
 using portal_roadtrip.Application.Interfaces;
+using portal_roadtrip.Application.Services;
 using portal_roadtrip.Domain.Entities;
 
 namespace portal_roadtrip.API.Controllers;
@@ -28,9 +29,21 @@ public class EventoController : ControllerBase
     }
 
     [HttpPost("AddEvento")]
-    public async Task<ActionResult<Evento>> AddEvento([FromBody] EventoDTO dto)
+    public async Task<Evento> AddEvento([FromBody] EventoDTO dto)
     {
         return await EventoService.AddEvento(dto);
+        //try
+        //{
+        //    var evento = await EventoService.AddEvento(dto);
+        //    if (evento == null) return NoContent();
+
+        //    return Ok(evento);
+        //}
+        //catch (Exception ex)
+        //{
+        //    return this.StatusCode(StatusCodes.Status500InternalServerError,
+        //        $"Erro ao tentar adicionar eventos. Erro: {ex.Message}");
+        //}
     }
 
     [HttpDelete("DeletarEvento")]
