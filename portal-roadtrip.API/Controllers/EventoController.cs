@@ -17,7 +17,7 @@ public class EventoController : ControllerBase
     }
 
     [HttpGet("ListarEventos")]
-    public async Task<List<Evento>> ListarEventos()
+    public async Task<List<EventoDTO>> ListarEventos()
     {
         return await EventoService.ListarEventos();
     }
@@ -29,7 +29,7 @@ public class EventoController : ControllerBase
     }
 
     [HttpPost("AddEvento")]
-    public async Task<Evento> AddEvento([FromBody] EventoDTO dto)
+    public async Task<Evento> AddEvento([FromBody] EventoCadastroDTO dto)
     {
         return await EventoService.AddEvento(dto);
         //try

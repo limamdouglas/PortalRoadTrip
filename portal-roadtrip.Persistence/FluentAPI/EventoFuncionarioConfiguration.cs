@@ -8,7 +8,7 @@ public class EventoFuncionarioConfiguration : IEntityTypeConfiguration<EventoFun
 {
     public void Configure(EntityTypeBuilder<EventoFuncionario> builder)
     {
-        builder.ToTable("Evento_Ponto_Funcionario").HasKey(x => x.Id);
+        builder.ToTable("Evento_Funcionario").HasKey(x => x.Id);
         builder.HasOne(x => x.Evento).WithMany().HasForeignKey(x => x.EventoId);
         builder.HasOne(x => x.Funcionario).WithMany().HasForeignKey(x => x.FuncionarioId);
     }

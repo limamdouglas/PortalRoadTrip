@@ -1,6 +1,9 @@
-﻿using portal_roadtrip.Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using portal_roadtrip.Application.DTO;
+using portal_roadtrip.Application.Interfaces;
 using portal_roadtrip.Domain.Entities;
 using portal_roadtrip.Persistence.Interfaces;
+using portal_roadtrip.Persistence.Repositorys;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,9 +20,17 @@ public class CargoService : ICargoService
         _cargoRepository = cargoRepository;
     }
 
-    public Task<Cargo> AddCargo(Cargo Cargo)
+    public async Task<Cargo> AddCargo(Cargo cargo)
     {
-        throw new NotImplementedException();
+        var response = await _cargoRepository.AddAsycn(cargo);
+
+        await _cargoRepository.SaveChangesAsync();
+
+        return new Cargo()
+        {
+            Id = response.Id,
+            Descricao = response.Descricao
+        };
     }
 
     public Task<Cargo> BuscarCargo(int CargoId)
@@ -32,9 +43,9 @@ public class CargoService : ICargoService
         throw new NotImplementedException();
     }
 
-    public Task<List<Cargo>> ListarCargos()
+    public async Task<List<Cargo>> ListarCargos()
     {
-        throw new NotImplementedException();
+        return await _cargoRepository.AsQueryable().ToListAsync();
     }
 
     public Task<Cargo> UpdateCargo(Cargo Cargo)

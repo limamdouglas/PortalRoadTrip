@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyModel.Resolution;
 using portal_roadtrip.Application.DTO;
 using portal_roadtrip.Application.Interfaces;
 using portal_roadtrip.Domain.Entities;
@@ -15,27 +16,45 @@ namespace portal_roadtrip.Application.Services;
 public class EventoService : IEventoService
 {
     private readonly IEventoRepository _eventoRepository;
-    public EventoService(IEventoRepository eventoRepository)
+    private readonly IEventoPontoEmbarqueRepository _eventoPontoEmbarqueRepository;
+    public EventoService(IEventoRepository eventoRepository, IEventoPontoEmbarqueRepository eventoPontoEmbarqueRepository)
     {
         _eventoRepository = eventoRepository;
+        _eventoPontoEmbarqueRepository = eventoPontoEmbarqueRepository;
     }
 
-    public async Task<Evento> AddEvento(EventoDTO dto)
+    public async Task<Evento> AddEvento(EventoCadastroDTO dto)
     {
         try
         {
             var evento = new Evento()
             {
                 CategoriaEventoId = Convert.ToInt32(dto.Categoria),
-                Data = new DateTime(Convert.ToInt32(dto.DataEvento.Substring(0,4)),
-                                    Convert.ToInt32(dto.DataEvento.Substring(5, 2)),
-                                    Convert.ToInt32(dto.DataEvento.Substring(8, 2))),
-                Nome = dto.Evento
+                Data = new DateTime(Convert.ToInt32(dto.Data.Substring(0,4)),
+                                    Convert.ToInt32(dto.Data.Substring(5, 2)),
+                                    Convert.ToInt32(dto.Data.Substring(8, 2))),
+                Nome = dto.Nome,
+                Descricao = dto.Descricao,
+                Preco = dto.Preco,
+                QuantidadeVagas = dto.QtdVagas,
+                Roteiro = dto.Roteiro
             };
             var response = await _eventoRepository.AddAsycn(evento);
 
             await _eventoRepository.SaveChangesAsync();
 
+            foreach (var item in dto.PontoEmbarque)
+            {
+                var eventoPontoEmbarque = new EventoPontoEmbarque()
+                {
+                    EventoId = response.Id,
+                    PontoEmbarqueId = item
+                };
+
+                await _eventoPontoEmbarqueRepository.AddAsycn(eventoPontoEmbarque);
+            }
+
+            await _eventoPontoEmbarqueRepository.SaveChangesAsync();
             return response;
         }
         catch (Exception)
@@ -67,12 +86,37 @@ public class EventoService : IEventoService
         }
     }
 
-    public async Task<List<Evento>> ListarEventos()
+    public async Task<List<EventoDTO>> ListarEventos()
     {
         try
         {
-            var listaUsuario = await _eventoRepository.AsQueryable().ToListAsync();
-            return listaUsuario;
+            var listaEventos = await _eventoRepository.AsQueryable()
+                .Include(x => x.CategoriaEvento)
+                .Include(x => x.EventoPontoEmbarque)
+                .ThenInclude(y => y.PontoEmbarque)
+                .Include(x => x.EventoCliente)
+                .ThenInclude(y => y.Usuario)
+                .OrderBy(x => x.Data).ToListAsync();
+            var dto = new List<EventoDTO>();
+
+            foreach (var item in listaEventos)
+            {
+                var eventoDto = new EventoDTO()
+                {
+                    Categoria = item.CategoriaEvento.Descricao,
+                    Nome = item.Nome,
+                    Data = item.Data.ToShortDateString(),
+                    Id = item.Id,
+                    QtdVagas = item.QuantidadeVagas,
+                    QtdVagasDisponiveis = (item.QuantidadeVagas) - (item.EventoCliente.Count),
+                    Descricao = item.Descricao,
+                    Roteiro = item.Roteiro,
+                    Preco = item.Preco,
+                    PontoEmbarque = item.EventoPontoEmbarque.Select(x => x.PontoEmbarque.Descricao).ToList()
+                };
+                dto.Add(eventoDto);
+            }
+            return dto;
         }
         catch (Exception ex)
         {

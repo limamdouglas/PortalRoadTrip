@@ -27,7 +27,7 @@ public class CargoController : ControllerBase
     }
 
     [HttpPost("AddCargo")]
-    public async Task<ActionResult<Cargo>> BuscarCargoAsync([FromBody] Cargo cargo)
+    public async Task<ActionResult<Cargo>> AddCargo([FromBody] Cargo cargo)
     {
         return await CargoService.AddCargo(cargo);
     }

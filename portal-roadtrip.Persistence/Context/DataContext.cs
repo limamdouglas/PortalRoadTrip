@@ -19,6 +19,7 @@ public class DataContext : DbContext
         modelBuilder.ApplyConfiguration(new EventoFuncionarioConfiguration());
         modelBuilder.ApplyConfiguration(new ConexaoUsuarioConfiguration());
         modelBuilder.ApplyConfiguration(new EventoConfiguration());
+        modelBuilder.ApplyConfiguration(new EventoClienteConfiguration());
     }
 
     public DbSet<Usuario> Usuario { get; set; }
@@ -30,4 +31,5 @@ public class DataContext : DbContext
     public DbSet<ConexaoUsuario> ConexaoUsuario { get; set; }
     public DbSet<Cargo> Cargo { get; set; }
     public DbSet<CategoriaEvento> CategoriaEvento { get; set; }
+    public DbSet<EventoCliente> EventoCliente { get; set; }
 }

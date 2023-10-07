@@ -10,9 +10,9 @@ namespace portal_roadtrip.Application.Interfaces;
 
 public interface IEventoService
 {
-    Task<Evento> AddEvento(EventoDTO dto);
+    Task<Evento> AddEvento(EventoCadastroDTO dto);
     Task<Evento> UpdateEvento(Evento evento);
     Task<bool> DeleteEvento(int eventoId);
-    Task<List<Evento>> ListarEventos();
+    Task<List<EventoDTO>> ListarEventos();
     Task<Evento> BuscarEvento(int eventoId);
 }

@@ -1,4 +1,5 @@
-﻿using portal_roadtrip.Domain.Entities;
+﻿using portal_roadtrip.Application.DTO;
+using portal_roadtrip.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace portal_roadtrip.Application.Interfaces;
 
 public interface IFuncionarioService
 {
-    Task<Funcionario> AddFuncionario(Funcionario Funcionario);
+    Task<FuncionarioDTO> AddFuncionario(FuncionarioCadastroDTO Funcionario);
     Task<Funcionario> UpdateFuncionario(Funcionario Funcionario);
     Task<bool> DeleteFuncionario(int FuncionarioId);
-    Task<List<Funcionario>> ListarFuncionarios();
-    Task<Funcionario> BuscarFuncionario(int FuncionarioId);
+    Task<List<FuncionarioDTO>> ListarFuncionarios();
+    Task<FuncionarioDTO> BuscarFuncionario(int FuncionarioId);
 }
