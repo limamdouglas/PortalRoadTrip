@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using portal_roadtrip.Application.DTO;
 using portal_roadtrip.Application.Interfaces;
 using portal_roadtrip.Domain.Entities;
 
@@ -15,9 +16,15 @@ public class EventoFuncionarioController : ControllerBase
     }
 
     [HttpGet("ListarEventosFuncionarios")]
-    public async Task<List<EventoFuncionario>> ListarEventosFuncionarios()
+    public async Task<List<EscalaDTO>> ListarEventosFuncionarios()
     {
         return await _eventoFuncionarioService.ListarEventoFuncionarios();
+    }
+
+    [HttpGet("ListarEventosFuncionarios/{eventoId}")]
+    public async Task<EventoFuncionarioDTO> ListarEventosFuncionarios(int eventoId)
+    {
+        return await _eventoFuncionarioService.ListarEventosFuncionarios(eventoId);
     }
 
     [HttpGet("BuscarEventoFuncionario")]
@@ -27,7 +34,7 @@ public class EventoFuncionarioController : ControllerBase
     }
 
     [HttpPost("AddEventoFuncionario")]
-    public async Task<ActionResult<EventoFuncionario>> BuscarEventoFuncionario([FromBody] EventoFuncionario eventoFuncionario)
+    public async Task<ActionResult<EventoFuncionario>> BuscarEventoFuncionario([FromBody] EventoFuncionarioDTO eventoFuncionario)
     {
         return await _eventoFuncionarioService.AddEventoFuncionario(eventoFuncionario);
     }

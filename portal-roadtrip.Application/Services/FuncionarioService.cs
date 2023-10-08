@@ -26,7 +26,7 @@ public class FuncionarioService : IFuncionarioService
         {
             var funcionario = new Funcionario()
             {
-                CargoId = 1,
+                CargoId = dto.CargoId,
                 CPF = dto.CPF,
                 DataAdmissao = DateTime.Now.ToString(),
                 Nome = dto.Nome,
