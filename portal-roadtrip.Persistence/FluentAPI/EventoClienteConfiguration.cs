@@ -10,6 +10,6 @@ public class EventoClienteConfiguration : IEntityTypeConfiguration<EventoCliente
     {
         builder.ToTable("Evento_Cliente").HasKey(x => x.Id);
         builder.HasOne(x => x.Evento).WithMany().HasForeignKey(x => x.EventoId);
-        builder.HasOne(x => x.Usuario).WithMany().HasForeignKey(x => x.UsuarioID);
+        builder.HasOne(x => x.Cliente).WithMany().HasForeignKey(x => x.ClienteID);
     }
 }

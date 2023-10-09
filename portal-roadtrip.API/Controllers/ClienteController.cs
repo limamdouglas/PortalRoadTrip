@@ -22,6 +22,12 @@ public class ClienteController : Controller
         return await _clienteService.ListarClientes();
     }
 
+    [HttpGet("BuscarCliente/{cpf}")]
+    public async Task<ClienteDTO> BuscarCliente(string cpf)
+    {
+        return await _clienteService.BuscarCliente(cpf);
+    }
+
     [HttpPost("SalvarCliente")]
     public async Task<ActionResult<ClienteDTO>> SalvarCliente([FromBody] ClienteCadastroDTO dto)
     {

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using portal_roadtrip.Persistence.Context;
 
@@ -10,9 +11,10 @@ using portal_roadtrip.Persistence.Context;
 namespace portal_roadtrip.Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231009001707_NovaPropriedadeEventoCliente_v2")]
+    partial class NovaPropriedadeEventoCliente_v2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.21");
@@ -170,9 +172,6 @@ namespace portal_roadtrip.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("ClienteID")
-                        .HasColumnType("INTEGER");
-
                     b.Property<bool>("EhReserva")
                         .HasColumnType("INTEGER");
 
@@ -185,13 +184,16 @@ namespace portal_roadtrip.Persistence.Migrations
                     b.Property<int>("QuantidadeVaga")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.Property<int>("UsuarioID")
+                        .HasColumnType("INTEGER");
 
-                    b.HasIndex("ClienteID");
+                    b.HasKey("Id");
 
                     b.HasIndex("EventoId");
 
                     b.HasIndex("EventoId1");
+
+                    b.HasIndex("UsuarioID");
 
                     b.ToTable("Evento_Cliente", (string)null);
                 });
@@ -368,12 +370,6 @@ namespace portal_roadtrip.Persistence.Migrations
 
             modelBuilder.Entity("portal_roadtrip.Domain.Entities.EventoCliente", b =>
                 {
-                    b.HasOne("portal_roadtrip.Domain.Entities.Cliente", "Cliente")
-                        .WithMany()
-                        .HasForeignKey("ClienteID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("portal_roadtrip.Domain.Entities.Evento", "Evento")
                         .WithMany()
                         .HasForeignKey("EventoId")
@@ -384,9 +380,15 @@ namespace portal_roadtrip.Persistence.Migrations
                         .WithMany("EventoCliente")
                         .HasForeignKey("EventoId1");
 
-                    b.Navigation("Cliente");
+                    b.HasOne("portal_roadtrip.Domain.Entities.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Evento");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("portal_roadtrip.Domain.Entities.EventoFuncionario", b =>

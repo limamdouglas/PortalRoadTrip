@@ -6,4 +6,5 @@ public interface IClienteService
 {
     Task<ClienteDTO> SalvarCliente(ClienteCadastroDTO dto);
     Task<List<ClienteDTO>> ListarClientes();
+    Task<ClienteDTO> BuscarCliente(string cpf);
 }

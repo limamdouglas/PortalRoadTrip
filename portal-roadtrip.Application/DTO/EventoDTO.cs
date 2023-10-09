@@ -18,4 +18,6 @@ public class EventoDTO
     public string Roteiro { get; set; }
     public List<string> PontoEmbarque { get; set; }
     public double Preco { get; set; }
+    public List<StaffDTO> Staff { get; set; } = new List<StaffDTO>();
+    public List<ClienteDTO> Cliente { get; set; } = new List<ClienteDTO>();
 }

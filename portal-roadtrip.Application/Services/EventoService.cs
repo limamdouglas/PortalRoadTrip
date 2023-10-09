@@ -5,6 +5,7 @@ using portal_roadtrip.Application.Interfaces;
 using portal_roadtrip.Domain.Entities;
 using portal_roadtrip.Persistence.Interfaces;
 using portal_roadtrip.Persistence.Repositorys;
+using SQLitePCL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +18,15 @@ public class EventoService : IEventoService
 {
     private readonly IEventoRepository _eventoRepository;
     private readonly IEventoPontoEmbarqueRepository _eventoPontoEmbarqueRepository;
-    public EventoService(IEventoRepository eventoRepository, IEventoPontoEmbarqueRepository eventoPontoEmbarqueRepository)
+    private readonly IEventoClienteRepository _eventoClienteRepository;
+    private readonly IEventoFuncionarioRepository _funcionarioRepository;
+    public EventoService(IEventoRepository eventoRepository, IEventoPontoEmbarqueRepository eventoPontoEmbarqueRepository,
+        IEventoClienteRepository eventoClienteRepository, IEventoFuncionarioRepository funcionarioRepository)
     {
         _eventoRepository = eventoRepository;
         _eventoPontoEmbarqueRepository = eventoPontoEmbarqueRepository;
+        _eventoClienteRepository = eventoClienteRepository;
+        _funcionarioRepository = funcionarioRepository;
     }
 
     public async Task<Evento> AddEvento(EventoCadastroDTO dto)
@@ -95,12 +101,18 @@ public class EventoService : IEventoService
                 .Include(x => x.EventoPontoEmbarque)
                 .ThenInclude(y => y.PontoEmbarque)
                 .Include(x => x.EventoCliente)
-                .ThenInclude(y => y.Usuario)
+                .ThenInclude(y => y.Cliente)
                 .OrderBy(x => x.Data).ToListAsync();
             var dto = new List<EventoDTO>();
 
+            
             foreach (var item in listaEventos)
             {
+
+                var pontoEmbarque = await _eventoPontoEmbarqueRepository.AsQueryable().Include(x => x.PontoEmbarque).Where(x => x.EventoId == item.Id).ToListAsync();
+                var eventoCliente = await _eventoClienteRepository.AsQueryable().Include(x => x.Cliente).Where(x => x.EventoId == item.Id).ToListAsync();
+                var funcionarios = await _funcionarioRepository.AsQueryable().Include(x => x.Funcionario).ThenInclude(y => y.Cargo).Where(x => x.EventoId == item.Id).ToListAsync();
+
                 var eventoDto = new EventoDTO()
                 {
                     Categoria = item.CategoriaEvento.Descricao,
@@ -108,12 +120,38 @@ public class EventoService : IEventoService
                     Data = item.Data.ToShortDateString(),
                     Id = item.Id,
                     QtdVagas = item.QuantidadeVagas,
-                    QtdVagasDisponiveis = (item.QuantidadeVagas) - (item.EventoCliente.Count),
+                    QtdVagasDisponiveis = (item.QuantidadeVagas) - (eventoCliente.Count),
                     Descricao = item.Descricao,
                     Roteiro = item.Roteiro,
                     Preco = item.Preco,
-                    PontoEmbarque = item.EventoPontoEmbarque.Select(x => x.PontoEmbarque.Descricao).ToList()
+                    PontoEmbarque = pontoEmbarque.Select(x => x.PontoEmbarque.Descricao).ToList()
                 };
+
+                foreach (var cliente in eventoCliente)
+                {
+                    var clienteDto = new ClienteDTO()
+                    {
+                        Nome = cliente.Cliente.Nome + cliente.Cliente.Sobrenome,
+                        CPF = cliente.Cliente.CPF,
+                        Telefone = cliente.Cliente.Telefone,
+                        RG = cliente.Cliente.RG,
+                        OrgaoEmissor = cliente.Cliente.OrgaoEmissor,
+                        Email = cliente.Cliente.Email
+                    };
+
+                    eventoDto.Cliente.Add(clienteDto);
+                }
+
+                foreach (var funcionario in funcionarios)
+                {
+                    var staff = new StaffDTO()
+                    {
+                        Nome = funcionario.Funcionario.Nome,
+                        Cargo = funcionario.Funcionario.Cargo.Descricao
+                    };
+
+                    eventoDto.Staff.Add(staff);
+                }
                 dto.Add(eventoDto);
             }
             return dto;

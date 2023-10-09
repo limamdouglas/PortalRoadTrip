@@ -73,4 +73,26 @@ public sealed class ClienteService : IClienteService
 
         return respose;
     }
+
+    public async Task<ClienteDTO> BuscarCliente(string cpf)
+    {
+        try
+        {
+            var cliente = await _clienteRepository.AsQueryable().Where(x => x.CPF.Equals(cpf)).FirstOrDefaultAsync();
+            if (cliente == null)
+                return null;
+
+            var response = new ClienteDTO() { 
+                Nome = cliente.Nome,
+                Id = cliente.ClienteId
+            };
+
+            return response;
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
 }
