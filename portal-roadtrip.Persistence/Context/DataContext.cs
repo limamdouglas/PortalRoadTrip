@@ -21,6 +21,7 @@ public class DataContext : DbContext
         modelBuilder.ApplyConfiguration(new EventoConfiguration());
         modelBuilder.ApplyConfiguration(new EventoClienteConfiguration());
         modelBuilder.ApplyConfiguration(new ClienteConfiguration());
+        modelBuilder.ApplyConfiguration(new CreditoConfiguration());
     }
 
     public DbSet<Usuario> Usuario { get; set; }
@@ -34,4 +35,5 @@ public class DataContext : DbContext
     public DbSet<CategoriaEvento> CategoriaEvento { get; set; }
     public DbSet<EventoCliente> EventoCliente { get; set; }
     public DbSet<Cliente> Cliente { get; set; }
+    public DbSet<Credito> Credito { get; set; }
 }

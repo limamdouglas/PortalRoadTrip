@@ -38,6 +38,8 @@ builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IClienteService, ClienteService>();
 builder.Services.AddScoped<IEventoClienteRepository, EventoClienteRepository>();
 builder.Services.AddScoped<IEventoClienteService, EventoClienteService>();
+builder.Services.AddScoped<ICreditoRepository, CreditoRepository>();
+builder.Services.AddScoped<ICreditoService, CreditoService>();
 
 builder.Services.AddCors();
 builder.Services.AddEndpointsApiExplorer();
