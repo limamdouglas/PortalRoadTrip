@@ -31,6 +31,39 @@ public class EventoClienteService : IEventoClienteService
         throw new NotImplementedException();
     }
 
+    public async Task<List<ClienteEventoDTO>> ListarEventosPorCliente()
+    {
+        try
+        {
+            var eventos = await _eventoClienteRepository.AsQueryable()
+                                                        .Include(x => x.Evento)
+                                                        .Where(x => x.ClienteID == 1)
+                                                        .OrderBy(x => x.Evento.Data).ToListAsync();
+
+            var eventosDTO = new List<ClienteEventoDTO>();
+
+            foreach (var item in eventos)
+            {
+                var evento = new ClienteEventoDTO()
+                {
+                    Data = item.Evento.Data.ToShortDateString(),
+                    Evento = item.Evento.Nome,
+                    PodeAvaliar = (item.Evento.Data <= DateTime.Now) ? true : false,
+                    QtdDias = (item.Evento.Data < DateTime.Now) ? 0 : (item.Evento.Data - DateTime.Now).Days
+                };
+
+                eventosDTO.Add(evento);
+            }
+
+            return eventosDTO;
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
     public async Task<EventoClienteDTO> SalvarEventoCliente(EventoClienteDTO dto)
     {
         try
