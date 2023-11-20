@@ -22,10 +22,10 @@ public class EventoClienteController : ControllerBase
         return await _eventoClienteService.ListarEventosCliente();
     }
 
-    [HttpGet("ListarEventosPorCliente")]
-    public async Task<List<ClienteEventoDTO>> ListarEventosPorCliente()
+    [HttpGet("ListarEventosPorCliente/{IdCliente}")]
+    public async Task<List<ClienteEventoDTO>> ListarEventosPorCliente([FromRoute] int IdCliente)
     {
-        return await _eventoClienteService.ListarEventosPorCliente();
+        return await _eventoClienteService.ListarEventosPorCliente(IdCliente);
     }
 
     [HttpPost("SalvarEventoCliente")]

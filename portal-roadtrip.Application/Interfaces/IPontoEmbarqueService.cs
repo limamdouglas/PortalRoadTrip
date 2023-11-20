@@ -1,4 +1,5 @@
-﻿using portal_roadtrip.Domain.Entities;
+﻿using portal_roadtrip.Application.DTO;
+using portal_roadtrip.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,4 +15,5 @@ public interface IPontoEmbarqueService
     Task<bool> DeletePontoEmbarque(int PontoEmbarqueId);
     Task<List<PontoEmbarque>> ListarPontoEmbarques();
     Task<PontoEmbarque> BuscarPontoEmbarque(int PontoEmbarqueId);
+    Task<List<PontoEmbarqueEventoDTO>> ListarPontoEmbarquesPorEvento(int idEvento);
 }

@@ -13,5 +13,5 @@ public interface IEventoClienteService
     Task<EventoClienteDTO> SalvarEventoCliente(EventoClienteDTO dto);
     Task<List<EventoClienteDTO>> ListarEventosCliente();
     Task<EventoClienteDTO> BuscarEventoClienteDTO();
-    Task<List<ClienteEventoDTO>> ListarEventosPorCliente();
+    Task<List<ClienteEventoDTO>> ListarEventosPorCliente(int idCliente);
 }

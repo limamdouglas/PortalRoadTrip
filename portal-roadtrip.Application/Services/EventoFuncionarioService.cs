@@ -145,7 +145,8 @@ public class EventoFuncionarioService : IEventoFuncionarioService
                 {
                     Id = item.Id,
                     Nome = item.Nome,
-                    Cargo = item.Cargo.Descricao
+                    Cargo = item.Cargo.Descricao,
+                    Instagram = item.Instagram
                 });
             }
 
@@ -155,7 +156,8 @@ public class EventoFuncionarioService : IEventoFuncionarioService
                 {
                     Id = item.FuncionarioId,
                     Nome = item.Funcionario.Nome,
-                    Cargo = item.Funcionario.Cargo.Descricao
+                    Cargo = item.Funcionario.Cargo.Descricao,
+                    Instagram = item.Funcionario.Instagram
                 });
             }
 

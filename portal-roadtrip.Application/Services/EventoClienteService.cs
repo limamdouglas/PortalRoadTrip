@@ -31,13 +31,13 @@ public class EventoClienteService : IEventoClienteService
         throw new NotImplementedException();
     }
 
-    public async Task<List<ClienteEventoDTO>> ListarEventosPorCliente()
+    public async Task<List<ClienteEventoDTO>> ListarEventosPorCliente(int idCliente)
     {
         try
         {
             var eventos = await _eventoClienteRepository.AsQueryable()
                                                         .Include(x => x.Evento)
-                                                        .Where(x => x.ClienteID == 1)
+                                                        .Where(x => x.ClienteID == idCliente)
                                                         .OrderBy(x => x.Evento.Data).ToListAsync();
 
             var eventosDTO = new List<ClienteEventoDTO>();
@@ -46,6 +46,7 @@ public class EventoClienteService : IEventoClienteService
             {
                 var evento = new ClienteEventoDTO()
                 {
+                    Id = item.EventoId,
                     Data = item.Evento.Data.ToShortDateString(),
                     Evento = item.Evento.Nome,
                     PodeAvaliar = (item.Evento.Data <= DateTime.Now) ? true : false,

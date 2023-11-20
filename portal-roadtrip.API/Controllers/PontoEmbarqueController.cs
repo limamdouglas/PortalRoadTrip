@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using portal_roadtrip.Application.DTO;
 using portal_roadtrip.Application.Interfaces;
 using portal_roadtrip.Domain.Entities;
 
@@ -19,4 +20,11 @@ public class PontoEmbarqueController : ControllerBase
     {
         return await PontoEmbarqueService.ListarPontoEmbarques();
     }
+
+    [HttpGet("ListarPontoEmbarquesPorEvento/{eventoId}")]
+    public async Task<List<PontoEmbarqueEventoDTO>> ListarPontoEmbarquesPorEvento( int eventoId)
+    {
+        return await PontoEmbarqueService.ListarPontoEmbarquesPorEvento(eventoId);
+    }
+    
 }

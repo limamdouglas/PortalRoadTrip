@@ -13,8 +13,9 @@ public class Funcionario
     public string DataAdmissao { get; set; }
     public string? DataDemissao { get; set; }
     public string CPF { get; set; }
-    public string RG { get; set; }
-    public string OrgaoEmissor { get; set; }
+    public string? RG { get; set; }
+    public string? OrgaoEmissor { get; set; }
+    public string Instagram { get; set; }
     public int CargoId { get; set; }
     public virtual Cargo Cargo { get; set; }
 }

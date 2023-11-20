@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace portal_roadtrip.Application.DTO;
 
-public class StaffDTO
+public class PontoEmbarqueEventoDTO
 {
     public int Id { get; set; }
-    public string Nome { get; set; }
-    public string Cargo { get; set; }
-    public string Instagram { get; set; }
+    public string Descricao { get; set; }
+    public string Horario { get; set; }
 }
